@@ -13,6 +13,7 @@ org 100h
 ;*************************************************************
  principal proc
  mov sp,0fffh ; inicializar SP (Stack Pointer)
+@@redo:
  mov ax,1230
  ;--------------------------------------------------------------- 
 
@@ -32,6 +33,8 @@ org 100h
     @@negative_run:
     push ax
  ;---------------------------------------------------------------
+    mov al,' '
+    call putchar
     mov al,'A'
     call putchar
     mov al,'X'
@@ -222,6 +225,7 @@ call putchar
     cmp cl,0
     jne @@print_dx
  @@out:
+jmp @@redo
  ret ; nunca se llega aquí
  endp
 ;***************************************************************
