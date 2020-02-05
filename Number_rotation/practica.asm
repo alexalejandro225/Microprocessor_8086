@@ -13,9 +13,9 @@ org 100h
 ;*************************************************************
  principal proc
  mov sp,0fffh ; inicializar SP (Stack Pointer)
- mov ax,200
- 
+ mov ax,1230
  ;--------------------------------------------------------------- 
+
  ;---------------------------------------------------------------
  cmp ax,8000h
  ja @@negative 
@@ -25,6 +25,11 @@ org 100h
 ;===============================================================
     not ax
     add ax,1
+    cmp ax,1270
+    jbe @@negative_run
+    call Overflow_test
+    jmp @@out
+    @@negative_run:
     push ax
  ;---------------------------------------------------------------
     mov al,'A'
@@ -120,8 +125,15 @@ call putchar
     add dx,1
     jmp @@out
 
+;===========================================
+
 ;*********************************************
  @@positive:
+    cmp ax,1270
+    jbe @@positive_run
+    call Overflow_test
+    jmp @@out
+    @@positive_run:
     push ax
  ;---------------------------------------------------------------
     mov al,'A'
@@ -209,10 +221,6 @@ call putchar
     dec cl
     cmp cl,0
     jne @@print_dx
-
-    
-
- 
  @@out:
  ret ; nunca se llega aquí
  endp
@@ -229,4 +237,40 @@ call putchar
  pop ax
  ret
  endp
+;*****************************************************************
+;procedimiento
+;*****************************************************************
+Overflow_test proc
+    push ax
+    push bx
+    mov al,'A'
+    call putchar
+    mov al,'X'
+    call putchar
+    mov al,'-'
+    call putchar
+    mov al,'>'
+    call putchar
+    mov al,'-'
+    call putchar
+    mov al,' '
+    call putchar
+    mov al,13
+    call putchar
+    mov al,10
+    call putchar
+    mov al,'D'
+    call putchar
+    mov al,'X'
+    call putchar
+    mov al,'-'
+    call putchar
+    mov al,'>'
+    call putchar
+    mov al,'0'
+    call putchar
+    pop bx
+    pop ax
+    ret
+    endp
  end principal ; fin de programa (file)
