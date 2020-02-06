@@ -13,8 +13,7 @@ org 100h
 ;*************************************************************
  principal proc
  mov sp,0fffh ; inicializar SP (Stack Pointer)
-@@redo:
- mov ax,1230
+ mov ax,12345d
  ;--------------------------------------------------------------- 
 
  ;---------------------------------------------------------------
@@ -225,6 +224,7 @@ call putchar
     cmp cl,0
     jne @@print_dx
  @@out:
+@@redo:
 jmp @@redo
  ret ; nunca se llega aquí
  endp
