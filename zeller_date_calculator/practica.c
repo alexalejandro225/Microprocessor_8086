@@ -8,6 +8,7 @@ void gets(char *str);
 int get_fecha(char *str,int index_a,int index_b);
 void zeller_congruense();
 int bisiesto(int year);
+void delay();
 /*--------------------------------------------------------------------------------------------*/
 char symbol[]={'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
 int decimal[] = {65000,60000,50000,10000,5000,1000,900,500,400,100,90,50,40,10,9,5,4,1};
@@ -16,6 +17,9 @@ int month_days[]={31,29,31,30,31,30,31,31,30,31,30,31};
 char *months[]={"enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"};
 /*-----------------------------------------------------------------------------------------------*/
 char fecha[12];
+char aux[10];
+char aux2[6];
+char aux3[11]={" del a/o "};
 
 
 int main(void)
@@ -62,7 +66,21 @@ int day,month,k,j,q,year,m,h;
         m=14;
         year--;
     }
-
+    aux[0]=' ';
+    aux[1]=fecha[0];
+    aux[2]=fecha[1];
+    aux[3]=' ';
+    aux[4]='d';
+    aux[5]='e';
+    aux[6]=' ';
+    aux[7]=0;
+    /*===================================*/
+    aux2[0]=fecha[6];
+    aux2[1]=fecha[7];
+    aux2[2]=fecha[8];
+    aux2[3]=fecha[9];
+    aux2[4]=0;
+/*=======================================*/
     k=year%100;
     j=year/100;
     h=(q+((m+1)*26/10)+k+(k/4)+(j/4)-(2*j));
@@ -70,25 +88,23 @@ int day,month,k,j,q,year,m,h;
     myputchar(10);
     myputchar(13);
     puts(days_zeller[h]);
-    myputchar(' ');
-    myputchar(fecha[0]);
-    myputchar(fecha[1]);
-    myputchar(' ');
-    puts("de");
-    myputchar(' ');
+    puts(aux);
     puts(months[month-1]);
-    myputchar(' ');
-    puts("del a/o ");
-    myputchar(fecha[6]);
-    myputchar(fecha[7]);
-    myputchar(fecha[8]);
-    myputchar(fecha[9]);
-    getch();
-
-
+    puts(aux3);
+    puts(aux2);
+    myputchar(10);
+    myputchar(13);
 }
 
 
+void delay()
+{
+    int i;
+    for(i=0; i==100; i++)
+    {
+        i++;
+    }
+}
 int get_fecha(char *str,int index_a,int index_b)
 {   int i=0;
     int res=0;
