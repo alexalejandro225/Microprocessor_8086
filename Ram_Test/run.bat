@@ -1,4 +1,4 @@
-tcc pra2.c putchar.asm
-tlink initj pra2 putchar,pra2
-mkbintj pra2
-pra2
+tcc practica.c putchar.asm
+tlink initj practica putchar,practica
+mkbintj practica
+practica
