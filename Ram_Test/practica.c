@@ -17,26 +17,22 @@ int main(void)
 { int i,offset=1,test; 
     while(1)
     {
-        for(i=ram_offset; i<=0x4200; i++)
+        puts("CARGANDO DATOS\n\r");
+        getch();
+        for(i=0; i<8; i++)                  /*loading walking ones to the memory*/
         {
-            poke(i,0x55);
-
-        }
-
-        for(i=0; i<13; i++)
-        {
-            poke(ram_offset+offset,0xAA);
+            poke(ram_offset+offset,offset);
             offset=offset<<1;
         }
         offset=1;
+
         puts("PRESIONA ENTER PARA PROBAR LINEAS DE DATOS\n\r");
-
         getch();
-
         for(i=0; i<8; i++)
         {
             myItoa(i,10,salida);
-            if(peek(ram_offset+offset)==0xAA)
+
+            if(peek(ram_offset+offset)==offset)         /*test walking ones on the memory*/
             {
                 puts("Linea de datos correcta_");
                 puts(salida);
@@ -44,35 +40,69 @@ int main(void)
             }
             else 
             {
-                puts("Linea de datos incorrecta\n\r");
-                puts("FALLA CRITICA LINEA DE DATOS/DIRECCIONES\n\r");
-            }
-            offset=offset<<1;
-        }
-        /*=============================================*/
-        puts("PRESIONA ENTER PARA PROBAR LINEAS DE DIRECCIONES\n\r");
-        getch();
-        /*=============================================*/
-        for(i=8; i<13; i++)
-        {
-            test=peek(ram_offset+offset);
-            myItoa(i,10,salida);
-            getch();
-            if(test==0xAA)
-            {
-                puts("Linea de direccion correcta_");
+                puts("FALLA CRITICA LINEA DE DATOS/DIRECCIONES_");
                 puts(salida);
                 puts("\n\r");
             }
-            else 
-            {
-                puts("Linea de direccion incorrecta\n\r");
-            }
             offset=offset<<1;
         }
+        /*===============================================================*/
+        puts("CARGANDO DATOS DE LINEA DE DIRECCIONES\n\r");
+        getch();
+        for(i=8; i<13; i++)
+        {
+            if(i%2)
+            {
+                poke(ram_offset+offset,0xAA);           /*loading test data 0x55 and 0xAA pattern to memory*/
+            }
+
+            else
+            {
+                poke(ram_offset+offset,0x55);
+            }
+         offset=offset<<1;
+        }
+        offset=256;
+
+        puts("PRESIONA ENTER PARA PROBAR LINEAS DE DIRECCION\n\r");         /* test data 0x55 and 0xAA pattern on memory*/
+        getch();
+        for(i=8; i<13; i++)
+        {
+            myItoa(i,10,salida);
+            if(i%2)
+            {
+                if(peek(ram_offset+offset)==0xAA)
+                {
+                    puts("Linea de direccion correcta_");
+                    puts(salida);
+                    puts("\n\r");
+                }
+                else
+                {
+                    puts("Linea de direccion incorrecta_");
+                    puts(salida);
+                    puts("\n\r");
+                }
+                
+            }
+            else
+            {
+                if(peek(ram_offset+offset)==0x55)
+                {
+                    puts("Linea de direccion correcta_");
+                    puts(salida);
+                    puts("\n\r");
+                }
+                else
+                {
+                    puts("Linea de direccion incorrecta_");
+                    puts(salida);
+                    puts("\n\r");
+                }
+            }
+         offset=offset<<1;
+        }
         offset=1;
-
-
     }
     return 0;
 }

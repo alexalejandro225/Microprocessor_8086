@@ -10,9 +10,9 @@
     _peek  PROC
                 push bp
                 mov bp,sp
-                mov bx,[bp+4]
+                mov bx,[bp+4] ;Ram offset 1 word size
                 
-                mov al,[bx]
+                mov al,[bx]   ;return data from pointer
                 pop bp
                 ret
     _peek ENDP
@@ -21,9 +21,9 @@
             push bp
             mov bp,sp
             
-            mov bx,[bp+4]
-            mov al,[bp+6]
-            mov byte ptr [bx],al
+            mov bx,[bp+4]   ;Ram offset 1 word size
+            mov al,[bp+6]   ;get byte of data from the stack
+            mov byte ptr [bx],al ;move data to memory 
             pop bp			
 			ret
 	_poke	ENDP
