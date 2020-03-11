@@ -7,98 +7,115 @@ void puts(char *str);
 char rotChar (char x, char n);
 void test_ceros();
 void test_ones();
+void test_bus_lines();
 char prueba2[50];
 char symbol[]={'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
-int i,j,t,contador=0;
 unsigned char contador_entrada=0;
 unsigned char salida[5];
+int j,i;
 
 
 int main()
 {
-    int i;
+    char i=1;
     
     while(1)
     {
-        puts("Presiona enter para cargar ceros\n\r");
+        puts("PRESIONA ENTER PRUEBA EN CEROS\n\r");
         getch();
-        for(i=0; i<0x1000; i++)
+        test_ceros();
+        puts("PRESIONA ENTER PRUEBA EN UNOS\n\r");
+        getch();
+        test_ones();
+        puts("PRESIONA ENTER PRUEBA EN LINEAS DE DATOS\n\r");
+        getch();
+        test_bus_lines();
+    }
+}
+
+void test_bus_lines()
+{
+     char offset=1;
+     int i;
+     char data_out=0;
+
+        for(i=0; i<8; i++)
         {
-            poke(i,1);
+            poke(offset,offset);
+            offset=offset<<1;
         }
 
-        puts("Presiona enter para probar ceros\n\r");
-        getch();
-        
-        
+        offset=1;
 
-        
-    }
+        for(i=0; i<8; i++)  
+
+            {
+            myItoa(i,10,salida);
+            data_out=peek(offset);
+            if(data_out==offset)
+            {
+                puts("LINEA DE DATOS CORRECTA NUM_");
+                puts(salida);
+                puts("\n\r");
+            }
+            else
+            {
+                puts("LINEA DE DATOS FALLIDA NUM_");
+                puts(salida);
+                puts("\n\r");
+            }
+            offset=offset<<1;
+        }
+
+        offset=1;
 }
 
 void test_ones()
 {
-    unsigned int i=0;
-    unsigned char data_out;
+     int i=0;
+     char data_out;
 
-        i=0;
-        
-        while(i<0x1000)
+        for(i=0; i<=0x800; i++)
         {
             poke(i,1);
-            i++;
         }
-
-        i=0;
-
-         while(i<0x1000) 
-        {
+        
+            for(i=0; i<=0x800; i++)       
+            {
             data_out=peek(i);
-            myItoa(data_out,16,salida);
+            myItoa(i,16,salida);
 
             if(data_out==1)
             {
-                puts("CELDA DE MEMORIA CORRECTA NUM_");
                 puts(salida);
                 puts("\n\r");
             }
-
             else
             {
                 puts("CELDA DE MEMORIA FALLIDA NUM_");
                 puts(salida);
                 puts("\n\r");
             }
-            i++;
         }
 }
 
 void test_ceros()
 {
-    unsigned int i=0;
-    unsigned char data_out;
+     int i=0;
+     char data_out;
 
-    puts("PRESIONA ENTER PRUEBA EN CEROS\n\r");
-        getch();
-
-        i=0;
-        
-        while(i<0x1000)
+        for(i=0; i<=0x800; i++)
         {
             poke(i,0);
-            i++;
         }
 
-        i=0;
-
-         while(i<0x1000) 
+        for(i=0; i<=0x800; i++)
         {
             data_out=peek(i);
-            myItoa(data_out,16,salida);
+            myItoa(i,16,salida);
 
             if(data_out==0)
             {
-                puts("CELDA DE MEMORIA CORRECTA NUM_");
                 puts(salida);
                 puts("\n\r");
             }
@@ -109,7 +126,6 @@ void test_ceros()
                 puts(salida);
                 puts("\n\r");
             }
-            i++;
         }
 }
 
