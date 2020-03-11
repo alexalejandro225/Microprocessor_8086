@@ -8,6 +8,7 @@ char rotChar (char x, char n);
 void test_ceros();
 void test_ones();
 void test_bus_lines();
+void test_direct_lines();
 char prueba2[50];
 char symbol[]={'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
 unsigned char contador_entrada=0;
@@ -30,8 +31,71 @@ int main()
         puts("PRESIONA ENTER PRUEBA EN LINEAS DE DATOS\n\r");
         getch();
         test_bus_lines();
+        puts("PRESIONA ENTER PRUEBA EN LINEAS DE DATOS\n\r");
+        getch();
+        test_direct_lines();
     }
 }
+
+void test_direct_lines()
+{
+    char test=0x55;
+    char data_out;
+
+    poke(512,0);
+    poke(1024,0);
+    poke(2048,0);
+    /*============================*/
+    poke(512,test);
+            myItoa(10,10,salida);
+            data_out=peek(512);
+            if(data_out==test)
+            {
+                puts("LINEA DE DIRRECION CORRECTA NUM_");
+                puts(salida);
+                puts("\n\r");
+            }
+            else
+            {
+                puts("LINEA DE DATOS FALLIDA NUM_");
+                puts(salida);
+                puts("\n\r");
+            }
+
+    poke(1024,test);
+            myItoa(11,10,salida);
+            data_out=peek(1024);
+            if(data_out==test)
+            {
+                puts("LINEA DE DIRRECION CORRECTA NUM_");
+                puts(salida);
+                puts("\n\r");
+            }
+            else
+            {
+                puts("LINEA DE DATOS FALLIDA NUM_");
+                puts(salida);
+                puts("\n\r");
+            }
+
+    poke(2048,test);
+            myItoa(12,10,salida);
+            data_out=peek(2048);
+            if(data_out==test)
+            {
+                puts("LINEA DE DIRRECION CORRECTA NUM_");
+                puts(salida);
+                puts("\n\r");
+            }
+            else
+            {
+                puts("LINEA DE DATOS FALLIDA NUM_");
+                puts(salida);
+                puts("\n\r");
+            }
+
+}
+
 
 void test_bus_lines()
 {
@@ -41,17 +105,10 @@ void test_bus_lines()
 
         for(i=0; i<8; i++)
         {
-            poke(offset,offset);
-            offset=offset<<1;
-        }
-
-        offset=1;
-
-        for(i=0; i<8; i++)  
-
-            {
+            poke(0,offset);
+            /*==================================*/
             myItoa(i,10,salida);
-            data_out=peek(offset);
+            data_out=peek(0);
             if(data_out==offset)
             {
                 puts("LINEA DE DATOS CORRECTA NUM_");
@@ -66,8 +123,6 @@ void test_bus_lines()
             }
             offset=offset<<1;
         }
-
-        offset=1;
 }
 
 void test_ones()
