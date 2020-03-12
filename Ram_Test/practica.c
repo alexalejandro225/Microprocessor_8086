@@ -7,7 +7,7 @@ void puts(char *str);
 char rotChar (char x, char n);
 void test_ceros();
 void test_ones();
-int test_bus_lines();
+void test_bus_lines();
 int  test_direct_lines();
 char prueba2[50];
 char symbol[]={'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
@@ -18,20 +18,11 @@ int j,i;
 
 int main()
 {   
-    char bus_test;
     int dir_test;
     while(1)
     {
-        bus_test=test_bus_lines();
-        if(bus_test!=0)
-        {
-            myItoa(dir_test,10,salida);
-            puts("data mala_\n\r");
-            puts(salida);
-            puts("\n\r");
-        }
+        test_bus_lines();
         getch();
-
         dir_test=test_direct_lines();
         if(dir_test!=0)
         {
@@ -97,7 +88,7 @@ int  test_direct_lines()
 }
 
 
-int test_bus_lines()
+void test_bus_lines()
 {
      int offset;
      for(offset=1; offset!=256; offset<<=1)
@@ -106,18 +97,24 @@ int test_bus_lines()
 
          if(peek(0) != offset)
          {
-             return (offset);
+            myItoa(offset,10,salida);
+            puts("Linea mala_");
+            puts(salida);
+            puts("\n\r");
          }
          
-         myItoa(offset,10,salida);
-         puts("Linea ok_");
-         puts(salida);
-         puts("\n\r");
+         else
+         {
+            myItoa(offset,10,salida);
+            puts("Linea ok_");
+            puts(salida);
+            puts("\n\r");
+         }
      }
 
-     return (0);
-
 }
+
+
 
 void test_ones()
 {
