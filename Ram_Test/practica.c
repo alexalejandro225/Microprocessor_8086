@@ -12,22 +12,37 @@ int  test_direct_lines();
 char prueba2[50];
 char symbol[]={'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
 unsigned char contador_entrada=0;
-unsigned char salida[5];
+unsigned char salida[10];
 int j,i;
 
 
 int main()
 {   
+    char bus_test;
+    int dir_test;
     while(1)
     {
-        if(test_bus_lines()!=0)
+        bus_test=test_bus_lines();
+        if(bus_test!=0)
         {
-            puts("data mala\n\r");
+            myItoa(dir_test,10,salida);
+            puts("data mala_\n\r");
+            puts(salida);
+            puts("\n\r");
         }
         getch();
-        if(test_direct_lines()!=0)
+
+        dir_test=test_direct_lines();
+        if(dir_test!=0)
         {
-            puts("direecion mala\n\r");
+            myItoa(dir_test,10,salida);
+            puts("dirrecion mala_");
+            puts(salida);
+            puts("\n\r");
+        }
+        else
+        {
+            puts("TODAS LAS DIRECCIONES CORRECTAS\n\r");
         }
         getch();
     }
@@ -52,7 +67,7 @@ int  test_direct_lines()
 
 /* check for addres bit stuck in high*/
 
-    for(offset=1 ; offset<=0x800; offset<<=1)
+    for(offset=1; offset<=0x800; offset<<=1)
     {
         if(peek(offset) != patter)
         {
