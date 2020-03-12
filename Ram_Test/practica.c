@@ -22,7 +22,12 @@ int main()
     {
         if(test_bus_lines()!=0)
         {
-            puts("linea mala\n\r");
+            puts("data mala\n\r");
+        }
+        getch();
+        if(test_direct_lines()!=0)
+        {
+            puts("direecion mala\n\r");
         }
         getch();
     }
@@ -51,7 +56,7 @@ int  test_direct_lines()
     {
         if(peek(offset) != patter)
         {
-            return (patter);
+            return (offset);
         }
         
     }
@@ -67,13 +72,12 @@ int  test_direct_lines()
         {
             if((peek(offset) !=patter ) && (offset!=test_offset))
             {
-                return (offset);
+                return (test_offset);
             }
         }
         poke(test_offset,patter);
-        return (0);
     }
-
+    return (0);
 
 }
 
