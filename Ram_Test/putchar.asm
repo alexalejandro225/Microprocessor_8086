@@ -11,9 +11,8 @@
                 push bp
                 mov bp,sp
                 mov cx,ds
-                mov ax,220h
-                mov ds,ax
-                mov bx,[bp+4] ;Ram offset 1 word size
+                mov ds,[bp+4]
+                mov bx,[bp+6] ;Ram offset 1 word size
                 mov al,[bx]   ;return data from pointer
                 mov ds,cx
                 pop bp
@@ -24,10 +23,9 @@
             push bp
             mov bp,sp
             mov cx,ds
-            mov bx,[bp+4]   ;Ram offset 1 word size
-            mov ax,220h
-            mov ds,ax
-            mov al,[bp+6]   ;get byte of data from the stack
+            mov ds,[bp+4]
+            mov bx,[bp+6]   ;Ram offset 1 word size
+            mov al,[bp+8]   ;get byte of data from the stack
             mov byte ptr [bx],al ;move data to memory 
             mov ds,cx
             pop bp			

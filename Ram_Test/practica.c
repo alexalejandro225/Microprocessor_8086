@@ -1,5 +1,6 @@
-extern unsigned char peek(unsigned int offset);
-extern void poke(unsigned int offset, unsigned char data) ;
+#define segment_num 0x220
+extern unsigned char peek(unsigned int segment,unsigned int offset);
+extern void poke(unsigned int segment,unsigned int offset, unsigned char data) ;
 extern void myputchar(char x);
 extern char getch(); 
 void myItoa(unsigned int num,int base, char *salida);
@@ -50,38 +51,38 @@ int  test_direct_lines()
 /* loading test high pattern*/
     for(offset=1 ; offset<=0x800; offset<<=1)
     {
-        poke(offset,patter);
+        poke(segment_num,offset,patter);
     }
 
         test_offset=0;
-        poke(test_offset,antipattern);
+        poke(segment_num,test_offset,antipattern);
 
 /* check for addres bit stuck in high*/
 
     for(offset=1; offset<=0x800; offset<<=1)
     {
-        if(peek(offset) != patter)
+        if(peek(segment_num,offset) != patter)
         {
             return (offset);
         }
         
     }
 
-    poke(test_offset,patter);
+    poke(segment_num,test_offset,patter);
 
 /* check for addres bit stuck in low or short circuit*/
     for(test_offset=1 ; test_offset<=0x800; test_offset<<=1)
     {
-        poke(test_offset,antipattern);
+        poke(segment_num,test_offset,antipattern);
 
         for(offset=1 ; offset<=0x800; offset<<=1)
         {
-            if((peek(offset) !=patter ) && (offset!=test_offset))
+            if((peek(segment_num,offset) !=patter ) && (offset!=test_offset))
             {
                 return (test_offset);
             }
         }
-        poke(test_offset,patter);
+        poke(segment_num,test_offset,patter);
     }
     return (0);
 
@@ -93,9 +94,9 @@ void test_bus_lines()
      int offset;
      for(offset=1; offset!=256; offset<<=1)
      {
-         poke(0,offset);
+         poke(segment_num,0,offset);
 
-         if(peek(0) != offset)
+         if(peek(segment_num,0) != offset)
          {
             myItoa(offset,10,salida);
             puts("Linea mala_");
@@ -116,64 +117,7 @@ void test_bus_lines()
 
 
 
-void test_ones()
-{
-     int i=0;
-     char data_out;
 
-        for(i=0; i<=0x800; i++)
-        {
-            poke(i,1);
-        }
-        
-            for(i=0; i<=0x800; i++)       
-            {
-            data_out=peek(i);
-            myItoa(i,16,salida);
-
-            if(data_out==1)
-            {
-                puts(salida);
-                puts("\n\r");
-            }
-            else
-            {
-                puts("CELDA DE MEMORIA FALLIDA NUM_");
-                puts(salida);
-                puts("\n\r");
-            }
-        }
-}
-
-void test_ceros()
-{
-     int i=0;
-     char data_out;
-
-        for(i=0; i<=0x800; i++)
-        {
-            poke(i,0);
-        }
-
-        for(i=0; i<=0x800; i++)
-        {
-            data_out=peek(i);
-            myItoa(i,16,salida);
-
-            if(data_out==0)
-            {
-                puts(salida);
-                puts("\n\r");
-            }
-
-            else
-            {
-                puts("CELDA DE MEMORIA FALLIDA NUM_");
-                puts(salida);
-                puts("\n\r");
-            }
-        }
-}
 
 void myItoa(unsigned int num,int base, char *salida)
 {
