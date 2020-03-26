@@ -5,6 +5,8 @@
 #define PC 0x42
 #define RCtr 0x43
 #define PTOs_all_out 0x80
+#define PTOs_all_in 0x9B
+
 
 extern void myputchar(char x);
 extern char getch(); 
@@ -14,8 +16,12 @@ extern void outportb( WORD port, BYTE dato);
 extern BYTE inportb( WORD port);
 void SetBitPort(WORD Puerto, BYTE num_bit);
 BYTE TstBitPort ( WORD Puerto, BYTE num_bit );
-
-
+void D1_on();
+void D2_on();
+void D3_on();
+void D4_on();
+void D5_on();
+void D6_on();
 void myItoa(unsigned int num,int base, char *salida);
 void puts(char *str);
 char rotChar (char x, char n);
@@ -27,41 +33,64 @@ int j,i;
 
 int main()
 {   
-    outportb(RCtr,0x9B);
+    outportb(RCtr,0x88);
     while(1)
     {
         getch();
-        myItoa(TstBitPort(PA,0),10,salida);
+        myItoa(TstBitPort(PC,4),10,salida);
         puts(salida);
-        puts("\n\r");
-        
     }
 }
 
 void SetBitPort(WORD Puerto, BYTE num_bit)
 {
-BYTE mask=0x01; /* mascara inicial */
-BYTE temp; /* dato auxiliar */
-temp = inportb(Puerto); /* leer dato del puerto */
-mask = mask << num_bit; /* ajustar mascara según num_bit */
-temp = temp | mask; /* aplicar mascara con operador OR */
-outportb(Puerto,temp ); /* presentar resultado en el puerto */
+ BYTE mask=0x01; /* mascara inicial */
+ BYTE temp; /* dato auxiliar */
+ temp = inportb(Puerto); /* leer dato del puerto */
+ mask = mask << num_bit; /* ajustar mascara según num_bit */
+ temp = temp | mask; /* aplicar mascara con operador OR */
+ outportb(Puerto,temp ); /* presentar resultado en el puerto */
 }
 
 BYTE TstBitPort ( WORD Puerto,BYTE num_bit )
 {
-BYTE mask=0x01; 
-BYTE temp; 
-temp = inportb(Puerto); 
-mask = mask << num_bit; 
-temp = temp & mask; 
-temp = temp >> num_bit;
+ BYTE mask=0x01; 
+ BYTE temp; 
+ temp = inportb(Puerto); 
+ mask = mask << num_bit; 
+ temp = temp & mask; 
+ temp = temp >> num_bit;
     if(temp)
     {
         return (1);
     }
 
     return(0);
+}
+
+void D1_on()
+{
+
+}
+void D2_on()
+{
+
+}
+void D3_on()
+{
+
+}
+void D4_on()
+{
+
+}
+void D5_on()
+{
+
+}
+void D6_on()
+{
+
 }
 
 void myItoa(unsigned int num,int base, char *salida)
