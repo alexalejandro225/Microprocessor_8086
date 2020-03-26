@@ -6,25 +6,17 @@
 #define RCtr 0x43
 #define PTOs_all_out 0x80
 #define PTOs_all_in 0x9B
-
-
 extern void myputchar(char x);
 extern char getch(); 
-
-
 extern void outportb( WORD port, BYTE dato);
 extern BYTE inportb( WORD port);
 void SetBitPort(WORD Puerto, BYTE num_bit);
 BYTE TstBitPort ( WORD Puerto, BYTE num_bit );
-void D1_on();
-void D2_on();
-void D3_on();
-void D4_on();
-void D5_on();
-void D6_on();
 void myItoa(unsigned int num,int base, char *salida);
 void puts(char *str);
 char rotChar (char x, char n);
+void led1_out();
+void led2_out();
 char prueba2[50];
 char symbol[]={'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
 unsigned char salida[10];
@@ -33,13 +25,33 @@ int j,i;
 
 int main()
 {   
-    outportb(RCtr,0x88);
+    i=0;
     while(1)
     {
+        
+            getch();
+            myItoa(TstBitPort(PC,4),10,salida);
+            puts(salida);
+            puts("alto");
+        led1_out();
+        led2_out();
         getch();
-        myItoa(TstBitPort(PC,4),10,salida);
-        puts(salida);
     }
+    return 0;
+}
+
+void led1_out()
+{
+    outportb(RCtr,0X89);
+    outportb(PA,0);
+    outportb(PB,2);
+}
+
+void led2_out()
+{
+    outportb(RCtr,0X89);
+    outportb(PA,2);
+    outportb(PB,0);
 }
 
 void SetBitPort(WORD Puerto, BYTE num_bit)
@@ -68,30 +80,6 @@ BYTE TstBitPort ( WORD Puerto,BYTE num_bit )
     return(0);
 }
 
-void D1_on()
-{
-
-}
-void D2_on()
-{
-
-}
-void D3_on()
-{
-
-}
-void D4_on()
-{
-
-}
-void D5_on()
-{
-
-}
-void D6_on()
-{
-
-}
 
 void myItoa(unsigned int num,int base, char *salida)
 {
