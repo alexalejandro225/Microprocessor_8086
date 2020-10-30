@@ -1,4 +1,4 @@
-#define segment_num 0x0d00
+#define segment_num 0x380
 extern unsigned char peek(unsigned int segment,unsigned int offset);
 extern void poke(unsigned int segment,unsigned int offset, unsigned char data) ;
 extern void myputchar(char x);
@@ -55,7 +55,7 @@ void test_mem_range()
     char antipattern= 0x55;
 
 /* loading test high pattern*/
-    for(offset=0x1 ; offset<=0x800; offset++)
+    for(offset=0x00 ; offset<=0x800; offset++)
     {
         poke(segment_num,offset,patter);
     }
@@ -63,7 +63,7 @@ void test_mem_range()
 
 /* check for addres bit stuck in high*/
 
-    for(offset=0x1 ; offset<=0x800; offset++)
+    for(offset=0x00 ; offset < 0x800; offset++)
     {
         if(peek(segment_num,offset) != patter)
         {
