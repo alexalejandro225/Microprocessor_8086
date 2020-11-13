@@ -1,22 +1,16 @@
-#define segment_num 0x380
+#define segment_num 0x280
 extern unsigned char peek(unsigned int segment,unsigned int offset);
 extern void poke(unsigned int segment,unsigned int offset, unsigned char data) ;
-extern void myputchar(char x);
-void test_mem_range();
+extern void putchar(char x);
 extern char getch(); 
-void myItoa(unsigned int num,int base, char *salida);
+void gets(char *str,char secret);
 void puts(char *str);
-char rotChar (char x, char n);
-void test_ceros();
-void test_ones();
+void itoa(unsigned int number, char* str, unsigned char base);
+unsigned int atoi(char *str);
 void test_bus_lines();
 int  test_direct_lines();
-char prueba2[50];
-char symbol[]={'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
-unsigned char contador_entrada=0;
-unsigned char salida[10];
-int j,i;
-
+void test_mem_range();
+unsigned char salida[20];
 
 int main()
 {   
@@ -28,7 +22,7 @@ int main()
         dir_test=test_direct_lines();
         if(dir_test!=0)
         {
-            myItoa(dir_test,10,salida);
+            itoa(dir_test,salida,10);
             puts("dirrecion mala_");
             puts(salida);
             puts("\n\r");
@@ -52,7 +46,6 @@ void test_mem_range()
     int test_offset;
 
     char patter= 0xAA;
-    char antipattern= 0x55;
 
 /* loading test high pattern*/
     for(offset=0x00 ; offset<=0x800; offset++)
@@ -68,13 +61,14 @@ void test_mem_range()
         if(peek(segment_num,offset) != patter)
         {
             puts("Rango de direccion no accesible=");
-            myItoa((offset+((segment_num*0x10))),16,salida);
+            itoa((offset+((segment_num*0x10))),salida,16);
             puts(salida);
             puts("\n\r");
         }
+
         else{
             puts("Rango de direccion accesible=");
-            myItoa((offset+((segment_num*0x10))),16,salida);
+            itoa((offset+((segment_num*0x10))),salida,16);
             puts(salida);
             puts("\n\r");
         }
@@ -129,7 +123,6 @@ int  test_direct_lines()
 
 }
 
-
 void test_bus_lines()
 {
      int offset;
@@ -139,7 +132,7 @@ void test_bus_lines()
 
          if(peek(segment_num,0) != offset)
          {
-            myItoa(offset,10,salida);
+            itoa(offset,salida,10);
             puts("Linea mala_");
             puts(salida);
             puts("\n\r");
@@ -147,7 +140,7 @@ void test_bus_lines()
          
          else
          {
-            myItoa(offset,10,salida);
+            itoa(offset,salida,10);
             puts("Linea ok_");
             puts(salida);
             puts("\n\r");
@@ -156,19 +149,18 @@ void test_bus_lines()
 
 }
 
-
-
-
-
-void myItoa(unsigned int num,int base, char *salida)
+void itoa(unsigned int number, char* str, unsigned char base)
 {
+    int j,i;
     char aux_string[16];
+    static char symbol[]={'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
     i=0,j=0;
 
-    if(num!=0){
-     while(num){ 
-            *(aux_string+i)=symbol[num%base];
-            num=num/base;
+
+    if(number!=0){
+     while(number){ 
+            *(aux_string+i)=symbol[number%base];
+            number=number/base;
             i++;
     }
         *(aux_string+i)=0;
@@ -177,31 +169,86 @@ void myItoa(unsigned int num,int base, char *salida)
         while(i)
         {
             i--;
-           (*(salida+j))=aux_string[i];
+           (*(str+j))=aux_string[i];
            j++;
 
         }
-        (*(salida+j))=0;
+        (*(str+j))=0;
     }
     else 
     {
         
-        salida[0]='0';
-        salida[1]=0;
+        str[0]='0';
+        str[1]=0;
     
     }
+}
+
+unsigned int atoi(char *str)
+{
+    
+    int res = 0; 
+    
+    int i = 0; 
+   
+    if(*str=='0')
+    {
+        return 0;
+    }
+
+    if((*str)==' ')
+    {
+        return 0;
+    }
+  
+    for (i=0; str[i] != '\0' && str[i] >= 48 && str[i] <= 57  ; ++i)
+	{
+        res = res * 10 + str[i] - '0';
+	}
+    return  res;
 }
 
 void puts(char* str)
 {
     while(*str)
     {
-        myputchar(*str++);
+        putchar(*str++);
     }
 }
 
-char rotChar (char x, char n)
+void gets(char* str,char secret)
 {
-  return (x<<n) | (x>>(8-n));
+    char temp;
+    int i=0;
+    while((temp=getchar())!='\r')
+    {    
+        if(temp==8 && i>0 )
+        {
+            i--;
+            str--;
+            putchar(temp);
+            putchar(' ');
+            putchar(temp);
+            
+            
+        }
+        if(temp!=8 && i<10)
+        {
+            if((~secret) & 0x01)
+            {
+                putchar(temp);
+            }
+            else
+            {
+                 putchar('*');
+            }
+            
+          *(str++)=temp;
+           i++;  /* code */
+        
+        }
+       
+    }
+    *str=0;
 }
 

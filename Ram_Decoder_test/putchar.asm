@@ -1,10 +1,15 @@
+; Public definitions for:
+;   unsigned char peek(unsigned int segment, unsigned int offset)
+;   void poke(unsigned int segment, unsigned int offset, unsigned char data)
+
+
 
 .model small
 .code 
 
     public _peek
     public _poke
-    public _myputchar
+    public _putchar
     public _getch
 
     _peek  PROC
@@ -32,7 +37,8 @@
 			ret
 	_poke	ENDP
 
-    _myputchar  PROC
+
+    _putchar  PROC
                 push bp
                 mov bp,sp
                 mov dl,[bp+4]
@@ -41,7 +47,7 @@
 
                 pop bp
                 ret
-    _myputchar ENDP
+    _putchar ENDP
 
     _getch	proc
             push bp
